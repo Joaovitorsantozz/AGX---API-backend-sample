@@ -1,4 +1,6 @@
 import User from "../models/usersSchema.ts";
+import throwlhosModule from "throwlhos";
+const throwlhos = throwlhosModule.default;
 
 export async function registerUserService(
   name: string,
@@ -15,6 +17,6 @@ export async function loginUserService(email: string) {
     return user;
   } catch (error) {
     console.error("Error logging in user:", error);
-    throw NotFoundError("Internal server error");
+    throw throwlhos.err_notFound("Usuário não encontrado.");
   }
 }

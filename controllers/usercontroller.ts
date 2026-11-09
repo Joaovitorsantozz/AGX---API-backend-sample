@@ -1,19 +1,19 @@
 import { Request, Response } from "express";
-import bcrypt from "npm:bcrypt";
-import jwt from "npm:jsonwebtoken@^9.0.2";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import {
   loginUserService,
   registerUserService,
 } from "../services/userservice.ts";
-import requestCheckPkg from "npm:request-check";
+import requestCheckPkg from "request-check";
 import isness from "@zarco/isness";
-const requestCheck = requestCheckPkg.default; // Pega a função construtora real
+const requestCheck = requestCheckPkg.default;
 const rc = requestCheck();
 export async function registerUser(req: Request, res: Response) {
   try {
     const { name, email, password } = req.body;
 
-    const errors = rc.check({ email }, { password }, { name });
+    const errors = rc.check({ email, password, name });
     if (errors) return res.send_badRequest("Requisição inválida", errors);
 
     if (!isness.email(email))
