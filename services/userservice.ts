@@ -15,6 +15,6 @@ export async function loginUserService(email: string) {
     return user;
   } catch (error) {
     console.error("Error logging in user:", error);
-    throw new Error("Internal server error");
+    throw NotFoundError("Internal server error");
   }
 }
