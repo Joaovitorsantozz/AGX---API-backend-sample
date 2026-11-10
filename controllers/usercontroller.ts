@@ -13,7 +13,7 @@ export async function registerUser(req: Request, res: Response) {
   try {
     const { name, email, password } = req.body;
 
-    const errors = rc.check({ email, password, name });
+    const errors = rc.check({ email }, { password }, { name });
     if (errors) return res.send_badRequest("Requisição inválida", errors);
 
     if (!isness.email(email))

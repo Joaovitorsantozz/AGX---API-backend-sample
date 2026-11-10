@@ -9,15 +9,17 @@ export default async function registerBookController(
   next: NextFunction,
 ) {
   try {
-    const { name, price, author, genre, status, publishedYear } = req.body;
-    const errors = rc.check({
-      name,
-      price,
-      author,
-      genre,
-      status,
-      publishedYear,
-    });
+    const { name, price, author, genre, status,isbn, publishedYear } = req.body;
+    const errors = rc.check(
+      { name },
+      { price },
+      { author },
+      { genre },
+      { status },
+      {isbn},
+      { publishedYear },
+    );
+    
     if (errors) {
       return res.send_badRequest("Requisição inválida", errors);
     }
@@ -27,11 +29,12 @@ export default async function registerBookController(
       author,
       genre,
       status,
+      isbn,
       publishedYear,
     );
 
     return res.send_created("Livro registrado");
-  } catch (err:any) {
+  } catch (err: any) {
     return res.send_badRequest(
       err.message ?? "Erro ao registrar livro",
       err.errors,

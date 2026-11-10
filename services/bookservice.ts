@@ -8,6 +8,7 @@ export default async function registerBookService(
   author: string,
   genre: string,
   status: "available" | "sold" | "reserved",
+  isbn:string,
   publishedYear: number,
  
 ) {
@@ -18,10 +19,13 @@ export default async function registerBookService(
       author,
       genre,
       status,
+      isbn,
       publishedYear,
     });
     return newBook;
   } catch (error) {
+    console.log(error);
     throw throwlhos.err_badRequest("Dados do livro inválidos.");
+    // pelo o que eu entendi aqui ele chama throwlhos diretamente por que não tem como tratar com req e res
   }
 }

@@ -5,7 +5,10 @@ import userRoutes from "./routes/userRoutes.ts";
 import bookRoutes from "./routes/bookRoutes.ts";
 import responserPkg from 'responser';
 import throwlhosModule from "throwlhos";
-import errorHandler from "npm:responserror";
+import ResponserrorPkg from "responserror";
+
+const Responserror = ResponserrorPkg.default ?? ResponserrorPkg;
+const { errorHandler } = new Responserror();
 const app = express();
 const throwlhos = throwlhosModule.default;
 const responser = responserPkg.default;
@@ -18,7 +21,8 @@ app.use(responser);
 
 app.use(userRoutes);
 app.use(bookRoutes);
-app.use(errorHandler.default ?? errorHandler);
+
+app.use(errorHandler);
 app.use(throwlhos.middleware);
 
 app.listen(3000, () => {
