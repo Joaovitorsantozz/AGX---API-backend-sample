@@ -7,7 +7,7 @@ const bookSchema = new mongoose.Schema({
   genre: { type: String, required: true, trim: true },
   status: {
     type: String,
-    enum: ["available", "sold", "reserved"],
+    enum: ["available", "borrowed"],
     default: "available",
   },
   isbn: { type: String, unique: true, required: true },

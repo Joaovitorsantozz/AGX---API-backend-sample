@@ -4,13 +4,14 @@ import { connectToDatabase } from "./database.ts";
 import userRoutes from "./routes/userRoutes.ts";
 import bookRoutes from "./routes/bookRoutes.ts";
 import responserPkg from 'responser';
-import throwlhosModule from "throwlhos";
+
 import ResponserrorPkg from "responserror";
+import throwlhos from "./utils/throwlhos.ts";
 
 const Responserror = ResponserrorPkg.default ?? ResponserrorPkg;
 const { errorHandler } = new Responserror();
 const app = express();
-const throwlhos = throwlhosModule.default;
+
 const responser = responserPkg.default;
 
 app.use(express.json());
@@ -41,4 +42,10 @@ usuario seleciona um livro em transação
 
 */
 
-// preciso verificar melhor esse tratamento de erro
+// nas services nao se usa o next por que nao tem acesso ao contexto req res se usa throw (throwlhos as any).err("erro")
+// nas controllers no catch so por next(err) vai pro handler
+//rc check aparentemente so serve pras respostas que vem no corpo da requisição
+
+
+
+// separar melhor controller service e repository

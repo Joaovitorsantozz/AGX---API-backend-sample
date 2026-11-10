@@ -1,5 +1,9 @@
-import Books from "../models/bookSchema.ts";
+
 import throwlhosModule from "throwlhos";
+import {
+  findBookByISBN,
+  registerBookRepository,
+} from "../repository/bookRepository.ts";
 
 const throwlhos = throwlhosModule.default;
 export default async function registerBookService(
@@ -7,25 +11,22 @@ export default async function registerBookService(
   price: number,
   author: string,
   genre: string,
-  status: "available" | "sold" | "reserved",
-  isbn:string,
+  status: "available" | "borrowed",
+  isbn: string,
   publishedYear: number,
- 
 ) {
-  try {
-    const newBook = await Books.create({
-      name,
-      price,
-      author,
-      genre,
-      status,
-      isbn,
-      publishedYear,
-    });
-    return newBook;
-  } catch (error) {
-    console.log(error);
-    throw throwlhos.err_badRequest("Dados do livro inválidos.");
-    // pelo o que eu entendi aqui ele chama throwlhos diretamente por que não tem como tratar com req e res
-  }
+  const thereIsAnExistedBookAlready = await findBookByISBN(isbn);
+
+  if (thereIsAnExistedBookAlready.length > 0)
+    throw throwlhos.err_conflict("Já existe um livro cadastrado com esse ISBN");
+
+  return await registerBookRepository({
+    name,
+    price,
+    author,
+    genre,
+    status,
+    isbn,
+    publishedYear,
+  });
 }

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import {
@@ -7,9 +7,16 @@ import {
 } from "../services/userservice.ts";
 import requestCheckPkg from "request-check";
 import isness from "@zarco/isness";
+import throwlhos from "../utils/throwlhos.ts";
+
 const requestCheck = requestCheckPkg.default;
 const rc = requestCheck();
-export async function registerUser(req: Request, res: Response) {
+
+export async function registerUser(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const { name, email, password } = req.body;
 
@@ -19,20 +26,18 @@ export async function registerUser(req: Request, res: Response) {
     if (!isness.email(email))
       return res.send_badRequest("Email precisar ser um email");
 
-    const bpass = await bcrypt.hash(password, 10);
-    const result = await registerUserService(name, email, bpass);
-    // um usuario pode ter varias contas com o mesmo email, precisa consertar
-
-    if (result) {
-      return res.send_created("Usuário registrado");
-    }
+    await registerUserService(name, email, password);
+    return res.send_created("Usuário Registrado");
   } catch (error) {
-    console.error("Error registering user:", error);
-    return res.sendbadRequest("Erro ao registrar usuário", error);
+    return next(error);
   }
 }
 
-export async function loginUser(req: Request, res: Response) {
+export async function loginUser(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   try {
     const { email, password } = req.body;
     if (!isness.email(email))
@@ -40,30 +45,10 @@ export async function loginUser(req: Request, res: Response) {
     const errors = rc.check({ email }, { password });
     if (errors) return res.send_badRequest("Requisição inválida", errors);
 
-    const result = await loginUserService(email);
+    const result = await loginUserService(email, password);
 
-    if (!result || result.length === 0) {
-      return res.send_badRequest("Usuário não encontrado ou senha incorreta");
-    }
-
-    const user = result[0];
-
-    const isPasswordCorrect = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordCorrect) {
-      return res.send_badRequest("Usuário ou senha incorretos");
-    }
-
-    const userObj = user.toObject();
-    const { password: _, ...userWithoutPassword } = userObj;
-
-    const SECRET = Deno.env.get("JWT_SECRET");
-    const payload = { userID: user.id, email: user.email, role: user.role };
-    const token = await jwt.sign(payload, SECRET, { expiresIn: "2h" });
-
-    return res.send_ok("Login realizado", { token, userWithoutPassword });
+    return res.send_ok("Login realizado", result);
   } catch (error) {
-    console.log(error);
-    return res.send_badRequest("erro ao logar usuário", error);
+    return next(error);
   }
 }

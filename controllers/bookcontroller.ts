@@ -1,29 +1,31 @@
 import { Request, Response, NextFunction } from "express";
-import requestCheckPkg from "request-check";
-import registerBookService from "../services/bookservice.ts";
-const requestCheck = requestCheckPkg.default;
-const rc = requestCheck();
+import registerBookService, {
+  findBookByISBN,
+} from "../services/bookservice.ts";
+import rc from "../utils/rc.ts";
+
 export default async function registerBookController(
   req: Request,
   res: Response,
   next: NextFunction,
 ) {
   try {
-    const { name, price, author, genre, status,isbn, publishedYear } = req.body;
+    const { name, price, author, genre, status, isbn, publishedYear } =
+      req.body;
     const errors = rc.check(
       { name },
       { price },
       { author },
       { genre },
       { status },
-      {isbn},
+      { isbn },
       { publishedYear },
     );
-    
+
     if (errors) {
       return res.send_badRequest("Requisição inválida", errors);
     }
-    await registerBookService(
+    const result = await  registerBookService(
       name,
       price,
       author,
@@ -32,12 +34,8 @@ export default async function registerBookController(
       isbn,
       publishedYear,
     );
-
-    return res.send_created("Livro registrado");
-  } catch (err: any) {
-    return res.send_badRequest(
-      err.message ?? "Erro ao registrar livro",
-      err.errors,
-    );
+    return res.send_created("Livro registrado", result);
+  } catch (err) {
+    return next(err);
   }
 }
