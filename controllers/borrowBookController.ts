@@ -5,6 +5,7 @@ import {
   returnBookService,
 } from "../services/borrowBookService.ts";
 import { JWTPayload } from "../utils/JWTPayload.ts";
+
 export async function borrowBookController(
   req: Request,
   res: Response,
@@ -36,9 +37,9 @@ export async function returnBookController(
   const { isbn } = req.body;
   const user = res.locals.user as unknown as JWTPayload;
   const userId = user.userID;
-  const errors = rc.check({ isbn, userId });
+  const errors = rc.check({ isbn });
   if (errors) return res.send_badRequest("ISBN inválido ou inexistente");
-  console.log("user id", userId);
+
   try {
     const result = await returnBookService(userId, isbn);
 

@@ -23,8 +23,8 @@ app.use(responser);
 app.use(userRoutes);
 app.use(bookRoutes);
 
-app.use(errorHandler);
 app.use(throwlhos.middleware);
+app.use(errorHandler);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

@@ -9,6 +9,3 @@ export async function createUser(data: { name: string; email: string; password: 
   return await User.create(data);
 }
 
-export async function login(data:{email:string,password:string}){
-  
-}

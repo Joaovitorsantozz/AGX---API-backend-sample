@@ -13,7 +13,7 @@ export default function AuthenticateToken(options: { adminOnly: boolean }) {
         ),
       );
     const secret = Deno.env.get("JWT_SECRET");
-    if (!secret) return next(new Error("JWT não configurado"));
+    if (!secret) return next(throwlhos.err_internalServerError("JWT não configurado"));
 
     let decoded: { userID: string; email: string; role: string };
     try {
@@ -26,7 +26,7 @@ export default function AuthenticateToken(options: { adminOnly: boolean }) {
 
     if (options.adminOnly && decoded.role != "admin") {
       return next(
-        throwlhos.err_unauthorized("Token inválida ou permissão negada"),
+        throwlhos.err_forbidden("Token inválida ou permissão negada"),
       );
     }
 

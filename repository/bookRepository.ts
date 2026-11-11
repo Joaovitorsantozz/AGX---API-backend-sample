@@ -15,7 +15,7 @@ export async function registerBookRepository(data: {
 
 export async function findByIsbn(isbn: string, session?: ClientSession) {
   const res = await Books.findOne({ isbn }).session(session ?? null);
-  console.log("book id", res?._id);
+
   return res;
 }
 export async function findBookByID(id: string) {
@@ -65,7 +65,18 @@ export async function findActiveOrder(
     status: "active",
   }).session(session);
 }
-
+export async function deleteBookWithExistingOrder(
+  bookId: Types.ObjectId,
+  session: ClientSession,
+) {
+  return await Order.deleteMany({ book: bookId }).session(session);
+}
+export async function deleteBook(
+  bookId: Types.ObjectId,
+  session: ClientSession,
+) {
+  return await Books.findByIdAndDelete(bookId).session(session);
+}
 export async function updateReturnOrder(
   orderId: string,
   session: ClientSession,
@@ -91,3 +102,5 @@ export async function updateBookStatus(
   );
   return order;
 }
+
+export async function deleteBookRepository() {}

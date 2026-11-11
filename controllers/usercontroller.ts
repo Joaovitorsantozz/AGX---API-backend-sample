@@ -1,16 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+
 import {
   loginUserService,
   registerUserService,
 } from "../services/userservice.ts";
-import requestCheckPkg from "request-check";
-import isness from "@zarco/isness";
-import throwlhos from "../utils/throwlhos.ts";
 
-const requestCheck = requestCheckPkg.default;
-const rc = requestCheck();
+import isness from "@zarco/isness";
+import rc from "../utils/rc.ts";
+
+
 
 export async function registerUser(
   req: Request,
