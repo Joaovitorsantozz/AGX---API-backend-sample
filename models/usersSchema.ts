@@ -1,4 +1,4 @@
-import mongose from "npm:mongoose";
+import mongose from "mongoose";
 
 const userSchema = new mongose.Schema({
     name: {type:String, required:true},

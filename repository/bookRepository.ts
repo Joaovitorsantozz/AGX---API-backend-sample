@@ -1,5 +1,6 @@
 import Books from "../models/bookSchema.ts";
-
+import { ClientSession, Types } from "mongoose";
+import { Order } from "../models/orderSchema.ts";
 export async function registerBookRepository(data: {
   name: string;
   price: number;
@@ -12,14 +13,81 @@ export async function registerBookRepository(data: {
   return await Books.create(data);
 }
 
-export async function findBookByISBN(isbn: string) {
-  const result = await Books.find({ isbn });
-  return result;
+export async function findByIsbn(isbn: string, session?: ClientSession) {
+  const res = await Books.findOne({ isbn }).session(session ?? null);
+  console.log("book id", res?._id);
+  return res;
 }
-
+export async function findBookByID(id: string) {
+  return await Books.find({ id });
+}
 export async function listAvailableBooksRepository() {
   return await Books.find(
     { status: "available" },
     "name isbn author genre status publishedYear",
   );
+}
+
+export async function markAsAvailableIsbn(
+  isbn: string,
+  session: ClientSession,
+) {
+  return await Books.findOneAndUpdate(
+    { isbn, status: "borrowed" },
+    { $set: { status: "available" } },
+    { new: true, session },
+  );
+}
+
+export async function markAsBorrowedIsbn(isbn: string, session: ClientSession) {
+  return await Books.findOneAndUpdate(
+    { isbn, status: "available" },
+    { $set: { status: "borrowed" } },
+    { new: true, session },
+  );
+}
+
+export async function createOrder(
+  data: { user: string; book: Types.ObjectId; isbn?: string; dueDate: Date },
+  session: ClientSession,
+) {
+  const [order] = await Order.create([data], { session });
+  return order;
+}
+
+export async function findActiveOrder(
+  data: { user: string; book: string },
+  session: ClientSession,
+) {
+  return await Order.findOne({
+    user: data.user,
+    book: data.book,
+    status: "active",
+  }).session(session);
+}
+
+export async function updateReturnOrder(
+  orderId: string,
+  session: ClientSession,
+) {
+  const order = await Order.findOneAndUpdate(
+    { _id: orderId },
+    { status: "returned", returnedAt: new Date() },
+    { new: true, session },
+  );
+
+  return order;
+}
+
+export async function updateBookStatus(
+  bookId: string,
+  status: string,
+  session: ClientSession,
+) {
+  const order = await Books.findByIdAndUpdate(
+    bookId,
+    { $set: { status } },
+    { new: true, session },
+  );
+  return order;
 }

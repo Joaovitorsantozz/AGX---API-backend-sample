@@ -1,7 +1,7 @@
 
 import throwlhosModule from "throwlhos";
 import {
-  findBookByISBN,
+  findByIsbn,
   registerBookRepository,
 } from "../repository/bookRepository.ts";
 
@@ -15,9 +15,9 @@ export default async function registerBookService(
   isbn: string,
   publishedYear: number,
 ) {
-  const thereIsAnExistedBookAlready = await findBookByISBN(isbn);
+  const thereIsAnExistedBookAlready = await findByIsbn(isbn);
 
-  if (thereIsAnExistedBookAlready.length > 0)
+  if (thereIsAnExistedBookAlready)
     throw throwlhos.err_conflict("Já existe um livro cadastrado com esse ISBN");
 
   return await registerBookRepository({
