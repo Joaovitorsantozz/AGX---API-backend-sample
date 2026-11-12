@@ -18,8 +18,8 @@ Projeto do desafio Deno CRUD.
 Clone o projeto:
  
 ```
-git clone https://github.com/seu-usuario/seu-repositorio.git
-cd seu-repositorio
+git clone https://github.com/Joaovitorsantozz/AGX---API-backend-sample.git
+cd .\projeto-back-end\
 ```
  
 Crie um arquivo `.env` na raiz com isso:
