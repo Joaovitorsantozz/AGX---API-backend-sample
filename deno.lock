@@ -1,12 +1,13 @@
 {
   "version": "5",
   "specifiers": {
-    "jsr:@std/assert@1": "1.0.19",
+    "jsr:@std/assert@^1.0.19": "1.0.19",
     "jsr:@std/internal@^1.0.12": "1.0.14",
     "jsr:@zarco/isness@~0.1.18": "0.1.18",
     "npm:@types/morgan@^1.9.10": "1.9.10",
     "npm:bcrypt@*": "6.0.0",
     "npm:bcrypt@6": "6.0.0",
+    "npm:bcryptjs@^3.0.3": "3.0.3",
     "npm:express@*": "5.3.0",
     "npm:express@^5.3.0": "5.3.0",
     "npm:jose@6": "6.2.15",
@@ -90,6 +91,10 @@
         "node-gyp-build"
       ],
       "scripts": true
+    },
+    "bcryptjs@3.0.3": {
+      "integrity": "sha512-GlF5wPWnSa/X5LKM1o0wz0suXIINz1iHRLvTS+sLyi7XPbe5ycmYI3DlZqVGZZtDgl4DmasFg7gOB3JYbphV5g==",
+      "bin": true
     },
     "body-parser@2.4.0": {
       "integrity": "sha512-Ifk1KcLrxaGt1occQagQNFNNOqRt1LFuehEnHHzB8Z6cRgIxRU1TBaiIsUiCdA+gy5PL7Y1IX31DNKkRmxtXjQ==",
@@ -667,10 +672,11 @@
   },
   "workspace": {
     "dependencies": [
-      "jsr:@std/assert@1",
+      "jsr:@std/assert@^1.0.19",
       "jsr:@zarco/isness@~0.1.18",
       "npm:@types/morgan@^1.9.10",
       "npm:bcrypt@6",
+      "npm:bcryptjs@^3.0.3",
       "npm:express@^5.3.0",
       "npm:jsonwebtoken@^9.0.3",
       "npm:mongoose@^9.12.0",

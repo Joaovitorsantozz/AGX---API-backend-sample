@@ -14,7 +14,7 @@ export async function borrowBookController(
   const { isbn } = req.body;
   const user = res.locals.user as unknown as JWTPayload;
   const userId = user.userID;
-  const errors = rc.check({ isbn, userId });
+  const errors = rc.check({ isbn},{userId });
 
   if (errors) {
     return res.send_badRequest("ISBN inválido ou inexistente");

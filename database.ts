@@ -1,4 +1,4 @@
-import mongoose from "npm:mongoose";
+import mongoose from "mongoose";
 
 export async function connectToDatabase() {
   const dbUrl = Deno.env.get("DB_URL");

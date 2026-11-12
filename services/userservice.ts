@@ -1,6 +1,6 @@
 
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import throwlhos from "../utils/throwlhos.ts";
 import { createUser, findByEmail } from "../repository/userRepository.ts";
 

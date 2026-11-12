@@ -35,7 +35,7 @@ export async function markAsAvailableIsbn(
   return await Books.findOneAndUpdate(
     { isbn, status: "borrowed" },
     { $set: { status: "available" } },
-    { new: true, session },
+    { returnDocument: "after", session },
   );
 }
 
@@ -43,7 +43,7 @@ export async function markAsBorrowedIsbn(isbn: string, session: ClientSession) {
   return await Books.findOneAndUpdate(
     { isbn, status: "available" },
     { $set: { status: "borrowed" } },
-    { new: true, session },
+    { returnDocument: "after", session },
   );
 }
 
@@ -84,7 +84,7 @@ export async function updateReturnOrder(
   const order = await Order.findOneAndUpdate(
     { _id: orderId },
     { status: "returned", returnedAt: new Date() },
-    { new: true, session },
+    { returnDocument: "after", session },
   );
 
   return order;
@@ -98,9 +98,7 @@ export async function updateBookStatus(
   const order = await Books.findByIdAndUpdate(
     bookId,
     { $set: { status } },
-    { new: true, session },
+    { returnDocument: "after", session },
   );
   return order;
 }
-
-export async function deleteBookRepository() {}
