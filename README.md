@@ -218,9 +218,7 @@ deno test --allow-net --allow-env --allow-read --allow-ffi --env-file=.env tests
  
 Os testes usam o banco do `.env`, então é melhor usar um banco de teste.
  
-## Documentação da API
- 
-Link da documentação no Postman: COLOCAR O LINK AQUI
+
  
 ## Erros
  
