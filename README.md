@@ -1,4 +1,4 @@
-<img width="921" height="843" alt="image" src="https://github.com/user-attachments/assets/1d9349d3-fb22-469e-a290-7220b352c09c" /># AGX Library
+# AGX Library
  
 API de biblioteca feita em Deno com MongoDB. Funções para cadastrar usuários, cadastrar livros (apenas admin), pegar livros emprestados e devolver.
  
@@ -218,7 +218,7 @@ deno test --allow-net --allow-env --allow-read --allow-ffi --env-file=.env tests
  
 Os testes usam o banco do `.env`, então é melhor usar um banco de teste.
  
-##Documentação da API
+## Documentação da API
 
 https://documenter.getpostman.com/view/59439885/2sBYHaNwst
  
